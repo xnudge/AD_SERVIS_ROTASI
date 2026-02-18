@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  
-
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="Servis" />
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- iOS PWA meta -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Servis" />
 
   <title>AYAKKABI DÜNYASI ESAS HOLDİNG-ZİNCİRLİKUYU SERVİS ROTASI</title>
 
@@ -199,14 +198,6 @@
       line-height: 1.35;
     }
 
-    .small{
-      font-size: 12px;
-      opacity: .85;
-    }
-
-  html{
-  font-size: 14px;
-}
     .tag{
       display:block;
       width: fit-content;
@@ -307,7 +298,6 @@
 
         <a href="tel:905353892007" class="btn btnGhost">📞 Ferdi Beyi Ara</a>
 
-        <!-- ✅ Tema butonu eklendi -->
         <button id="themeBtn" class="btn btnGhost" type="button">🌙 Gece Modu</button>
       </div>
 
@@ -348,7 +338,7 @@
   </div>
 
   <script>
-    // === ROTA KOORDİNATLARI (senin linkten) ===
+    // === ROTA KOORDİNATLARI ===
     const ORIGIN = { lat: 41.0894901, lng: 29.0963132 };
     const DEST   = { lat: 41.0691304, lng: 29.0152139 };
 
@@ -381,7 +371,6 @@
       }
     }
 
-    // İlk açılış: kayıt varsa onu kullan, yoksa cihaz temasını baz al
     const savedTheme = localStorage.getItem("theme");
     if(savedTheme){
       applyTheme(savedTheme);
@@ -390,12 +379,10 @@
       applyTheme(prefersLight ? "light" : "dark");
     }
 
-    if(themeBtn){
-      themeBtn.addEventListener("click", () => {
-        const isLightNow = document.body.classList.contains("light");
-        applyTheme(isLightNow ? "dark" : "light");
-      });
-    }
+    themeBtn.addEventListener("click", () => {
+      const isLightNow = document.body.classList.contains("light");
+      applyTheme(isLightNow ? "dark" : "light");
+    });
 
     // Service Worker register (PWA)
     if ("serviceWorker" in navigator) {
