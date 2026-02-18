@@ -1,0 +1,15 @@
+{
+  "name": "AD Servis Rotası",
+  "short_name": "Servis Rotası",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#6a00ff",
+  "theme_color": "#6a00ff",
+  "icons": [
+    {
+      "src": "images.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
