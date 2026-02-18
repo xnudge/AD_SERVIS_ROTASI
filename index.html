@@ -1,74 +1,341 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>AYAKKABI DÜNYASI ESAS HOLDİNG-ZİNCİRLİKUYU SERVİS ROTASI</title>
+  <title>AYAKKABI DÜNYASI ESAS HOLDİNG-ZİNCİRLİKUYU SERVİS ROTASI</title>
 
-<style>
-body {
-margin: 0;
-font-family: Arial, sans-serif;
-text-align: center;
-background: linear-gradient(135deg, #ff6a00, #6a00ff);
-color: white;
-}
+  <!-- PWA / ikonlar -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#6a00ff" />
+  <link rel="icon" href="logo.png" />
+  <link rel="apple-touch-icon" href="logo.png" />
 
-h1 {
-padding: 30px 20px 10px 20px;
-}
+  <style>
+    :root{
+      --glass: rgba(255,255,255,.14);
+      --glass2: rgba(255,255,255,.10);
+      --border: rgba(255,255,255,.22);
+      --shadow: 0 18px 50px rgba(0,0,0,.22);
+    }
 
-.gallery {
-display: flex;
-justify-content: center;
-gap: 20px;
-flex-wrap: wrap;
-padding: 20px;
-}
+    *{ box-sizing: border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: #fff;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(255,255,255,.22), transparent 55%),
+        linear-gradient(135deg, #ff6a00, #6a00ff, #00d4ff);
+      min-height: 100vh;
+    }
 
-.gallery img {
-width: 90%;
-max-width: 500px;
-height: auto;
-object-fit: cover;
-border-radius: 15px;
-box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-}
+    .wrap{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 22px 14px 30px;
+    }
 
-.button-container {
-margin: 40px;
-}
+    .topCard{
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      padding: 18px 16px 16px;
+      overflow: hidden;
+    }
 
-button {
-padding: 20px 40px;
-font-size: 20px;
-border: none;
-border-radius: 12px;
-cursor: pointer;
-background: white;
-color: black;
-font-weight: bold;
-}
-</style>
+    .brandRow{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .logo{
+      width: 120px;
+      height: 120px;
+      border-radius: 20px;
+      object-fit: cover;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.28);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+
+    h1{
+      margin: 10px 0 6px;
+      text-align:center;
+      font-size: clamp(20px, 3vw, 34px);
+      line-height: 1.15;
+      text-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+
+    .sub{
+      margin: 0;
+      text-align:center;
+      opacity: .92;
+      font-weight: 600;
+    }
+
+    .grid{
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 14px;
+    }
+
+    .card{
+      background: var(--glass2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 14px;
+      backdrop-filter: blur(10px);
+    }
+
+    .btnRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin-top: 14px;
+    }
+
+    .btn{
+      border: 0;
+      cursor: pointer;
+      text-decoration:none;
+      padding: 14px 18px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 16px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      transition: transform .12s ease, opacity .12s ease;
+      user-select:none;
+    }
+    .btn:hover{ transform: translateY(-1px); }
+    .btnPrimary{
+      background: rgba(255,255,255,.96);
+      color: #111827;
+      box-shadow: 0 14px 35px rgba(0,0,0,.22);
+    }
+    .btnGhost{
+      background: rgba(255,255,255,.16);
+      border:1px solid rgba(255,255,255,.22);
+      color:#fff;
+      backdrop-filter: blur(10px);
+    }
+
+    .kpis{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:10px;
+      margin-top: 12px;
+    }
+    .kpi{
+      background: rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.20);
+      border-radius: 16px;
+      padding: 10px;
+      min-height: 70px;
+    }
+    .kpi .label{
+      font-size: 12px;
+      opacity: .88;
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+    .kpi .value{
+      font-size: 13.5px;
+      font-weight: 900;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Görseller */
+    .gallery{
+      display:flex;
+      justify-content:center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    .gallery img{
+      width: 90%;
+      max-width: 520px;
+      height: auto;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.22);
+      box-shadow: 0 14px 34px rgba(0,0,0,.22);
+      object-fit: cover;
+      background: rgba(255,255,255,.10);
+    }
+
+    .note{
+      margin-top: 10px;
+      font-size: 13px;
+      opacity: .92;
+      line-height: 1.35;
+    }
+
+    .small{
+      font-size: 12px;
+      opacity: .85;
+    }
+
+    @media (max-width: 900px){
+      .grid{ grid-template-columns: 1fr; }
+      .kpis{ grid-template-columns: 1fr; }
+      .logo{ width: 98px; height: 98px; }
+    }
+  </style>
 </head>
 
 <body>
+  <div class="wrap">
+    <div class="topCard">
+      <div class="brandRow">
+        <!-- logo.png senin repodan geliyor -->
+        <img class="logo" src="logo.png" alt="Logo" />
+      </div>
 
-<h1>AYAKKABI DÜNYASI ESAS HOLDİNG-ZİNCİRLİKUYU SERVİS ROTASI</h1>
+      <h1>AYAKKABI DÜNYASI ESAS HOLDİNG-ZİNCİRLİKUYU SERVİS ROTASI</h1>
+      <p class="sub">Tek rota • Mobil uyumlu • Tek tıkla navigasyon</p>
 
-<div class="gallery">
-  <img src="images.png">
-  <img src="Screenshot_1.png">
-</div>
+      <div class="btnRow">
+        <a id="navBtn" class="btn btnPrimary" target="_blank" rel="noopener">
+          🚗 Navigasyonu Başlat (Google Maps)
+        </a>
+        <button id="shareBtn" class="btn btnGhost" type="button">📲 WhatsApp/Paylaş</button>
+        <button id="refreshBtn" class="btn btnGhost" type="button">🔄 Süreyi Yenile</button>
+      </div>
 
+      <div class="grid">
+        <div class="card">
+          <div class="kpis">
+            <div class="kpi">
+              <div class="label">Başlangıç</div>
+              <div id="originText" class="value">-</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Bitiş</div>
+              <div id="destText" class="value">-</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Tahmini</div>
+              <div id="etaText" class="value">Hesaplanıyor…</div>
+            </div>
+          </div>
 
+          <div class="note">
+            <b>Servis Saatleri (düzenlenebilir):</b><br/>
+            Sabah: <span id="morningTime">08:15</span> • Akşam: <span id="eveningTime">18:15</span>
+            <div class="small">(Saatleri aşağıdaki kodda 10 saniyede değiştirirsin.)</div>
+          </div>
+        </div>
 
-<div class="button-container">
-<a href="https://www.google.com/maps/dir/?api=1&origin=41.0894901,29.0963132&destination=41.0691304,29.0152139&travelmode=driving" target="_blank">
-<button>NAVİGASYONU BAŞLAT</button>
-</a>
-</div>
+        <div class="card">
+          <div class="note">
+            <b>Telefon ana ekrana ekleme:</b><br/>
+            <span class="small">
+              Android: Chrome → ⋮ → “Ana ekrana ekle”<br/>
+              iPhone: Safari → Paylaş → “Ana Ekrana Ekle”
+            </span>
+          </div>
+          <div class="note small">
+            Not: Bu sayfa market uygulaması değil; linkten çalışır.
+          </div>
+        </div>
+      </div>
 
+      <!-- Senin görsellerin -->
+      <div class="gallery">
+        <img src="servis.png" alt="Servis" />
+        <img src="logo.png" alt="Logo" />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // === ROTA KOORDİNATLARI (senin linkten) ===
+    const ORIGIN = { lat: 41.0894901, lng: 29.0963132 };
+    const DEST   = { lat: 41.0691304, lng: 29.0152139 };
+
+    // Saatleri buradan değiştirebilirsin:
+    const SERVICE_MORNING = "08:15";
+    const SERVICE_EVENING = "18:15";
+
+    document.getElementById("morningTime").textContent = SERVICE_MORNING;
+    document.getElementById("eveningTime").textContent = SERVICE_EVENING;
+
+    // Google Maps navigasyon linki
+    const gmapsUrl =
+      `https://www.google.com/maps/dir/?api=1` +
+      `&origin=${ORIGIN.lat},${ORIGIN.lng}` +
+      `&destination=${DEST.lat},${DEST.lng}` +
+      `&travelmode=driving`;
+
+    const navBtn = document.getElementById("navBtn");
+    navBtn.href = gmapsUrl;
+
+    document.getElementById("originText").textContent =
+      `${ORIGIN.lat.toFixed(6)}, ${ORIGIN.lng.toFixed(6)}`;
+    document.getElementById("destText").textContent =
+      `${DEST.lat.toFixed(6)}, ${DEST.lng.toFixed(6)}`;
+
+    // OSRM ile km + dakika hesapla (ücretsiz)
+    async function updateETA(){
+      try{
+        const url =
+          `https://router.project-osrm.org/route/v1/driving/` +
+          `${ORIGIN.lng},${ORIGIN.lat};${DEST.lng},${DEST.lat}` +
+          `?overview=false`;
+
+        const res = await fetch(url);
+        if(!res.ok) throw new Error("OSRM yanıt vermedi");
+        const data = await res.json();
+        const route = data.routes?.[0];
+        if(!route) throw new Error("Rota bulunamadı");
+
+        const km = route.distance / 1000;
+        const min = Math.round(route.duration / 60);
+        document.getElementById("etaText").textContent = `${km.toFixed(1)} km • ~${min} dk`;
+      }catch(e){
+        document.getElementById("etaText").textContent = "Hesaplanamadı (internet/servis)";
+      }
+    }
+    updateETA();
+    document.getElementById("refreshBtn").addEventListener("click", updateETA);
+
+    // WhatsApp / Paylaş
+    document.getElementById("shareBtn").addEventListener("click", async () => {
+      const shareText = "AYAKKABI DÜNYASI ESAS HOLDİNG-ZİNCİRLİKUYU SERVİS ROTASI";
+      const shareUrl = location.href;
+
+      // Telefonlarda native share varsa:
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: shareText, text: shareText, url: shareUrl });
+          return;
+        } catch (e) {}
+      }
+
+      // Yoksa WhatsApp linki aç:
+      const wa = `https://wa.me/?text=${encodeURIComponent(shareText + " " + shareUrl)}`;
+      window.open(wa, "_blank", "noopener");
+    });
+
+    // Service Worker register (PWA)
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js").catch(() => {});
+      });
+    }
+  </script>
 </body>
 </html>
