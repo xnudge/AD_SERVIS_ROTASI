@@ -280,23 +280,15 @@ const SERVICE_EVENING = "17:00";
 navBtn.addEventListener("click", function(e){
   e.preventDefault();
 
-  const choice = confirm("Tamam = Google Maps\nİptal = Yandex Maps");
-
   const googleUrl =
     `https://www.google.com/maps/dir/?api=1` +
     `&origin=${ORIGIN.lat},${ORIGIN.lng}` +
     `&destination=${DEST.lat},${DEST.lng}` +
     `&travelmode=driving`;
 
-  const yandexUrl =
-    `https://yandex.com/maps/?rtext=${ORIGIN.lat},${ORIGIN.lng}~${DEST.lat},${DEST.lng}&rtt=auto`;
-
-  if(choice){
-    window.open(googleUrl, "_blank");
-  } else {
-    window.open(yandexUrl, "_blank");
-  }
+  window.open(googleUrl, "_blank");
 });
+
 
 
     document.getElementById("originText").textContent =
