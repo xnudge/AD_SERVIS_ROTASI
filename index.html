@@ -198,27 +198,26 @@
       opacity: .85;
     }
 
-    @media (max-width: 900px){
-      .grid{ grid-template-columns: 1fr; }
-      .kpis{ grid-template-columns: 1fr; }
-      .logo{ width: 98px; height: 98px; }
+   @media (max-width: 900px){
+  .grid{ grid-template-columns: 1fr; }
+  .kpis{ grid-template-columns: repeat(2, 1fr); }
+  .logo{ width: 98px; height: 98px; }
 
-      .kpi .value{
-        white-space: normal;
-        line-height: 1.2;
-      }
+  .kpi .value{
+    white-space: normal;
+    line-height: 1.2;
+  }
 
-      .btnRow{
-        flex-wrap: nowrap;
-      }
+  .btnRow{
+    flex-wrap: nowrap;
+  }
 
-      .btn{
-        flex: 1;
-        font-size: 14px;
-        padding: 12px 10px;
-      }
-    }
-
+  .btn{
+    flex: 1;
+    font-size: 14px;
+    padding: 12px 10px;
+  }
+}
     .tag{
       display:block;
       width: fit-content;
