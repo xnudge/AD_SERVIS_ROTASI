@@ -187,16 +187,21 @@
 
     /* İç kullanım etiketi */
 .tag{
-  display:inline-block;
-  margin: 10px auto 0;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.12);
-  border: 1px solid rgba(255,255,255,.22);
-  backdrop-filter: blur(10px);
-  font-weight: 800;
-  letter-spacing: .2px;
+  display:block;
+  width: fit-content;
+  margin: 18px auto 16px auto;
+
+  padding: 12px 26px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #00e0ff, #6a00ff);
+  color: #fff;
+  font-weight: 900;
+  font-size: 16px;
+  letter-spacing: .5px;
+  text-align:center;
+  box-shadow: 0 10px 30px rgba(0,0,0,.3);
 }
+
 
 /* Saat badge'leri */
 .badges{
@@ -258,8 +263,28 @@
 }
 
 .itLetter{
-  color: #4da3ff; /* Kurumsal mavi ton */
+  color: #00e0ff;
   font-weight: 900;
+  text-shadow: 0 0 8px rgba(0,224,255,.8);
+}
+
+   /* Sadece navigasyon butonu alt alta olsun */
+#navBtn{
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.btnMain{
+  line-height: 1.1;
+}
+
+.btnSub{
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 500;
+  opacity: .8;
+  margin-top: 4px;
 }
 
 
@@ -280,10 +305,11 @@
       <div class="tag">Ayakkabı Dünyası • İç Kullanım</div>
 
       <div class="btnRow">
-       <a id="navBtn" class="btn btnPrimary" href="#" rel="noopener">
+    <a id="navBtn" class="btn btnPrimary" href="#">
+  <span class="btnMain">🚗 Navigasyonu Başlat</span>
+  <span class="btnSub">Google Maps</span>
+</a>
 
-          🚗 Navigasyonu Başlat (Google Maps)
-        </a>
        <a href="tel:905353892007" class="btn btnGhost">
   📞 Ferdi Beyi Ara
 </a>
@@ -301,46 +327,36 @@
         <div class="label">Bitiş</div>
         <div id="destText" class="value">-</div>
       </div>
-      <div class="kpi">
-        <div class="label">Tahmini</div>
-        <div id="etaText" class="value">Hesaplanıyor…</div>
-      </div>
+     
     </div>
 
-    <div class="note">
-      <b>Servis Saatleri</b>
-      <div class="badges">
-        <span class="badge">Sabah: <span id="morningTime">07:10</span></span>
-        <span class="badge">Akşam: <span id="eveningTime">17:00</span></span>
-      </div>
-      <div class="small">(Saatleri aşağıdaki kodda değiştirirsin.)</div>
-    </div>
+    
   </div>
 
   <div class="card">
-    <div class="note">
-      <b>Not</b><br/>
-      Bu sayfa tek rota servis navigasyonu içindir.
-    </div>
+   <div class="note">
+  <b>Bilgilendirme</b><br/>
+  Versiyon : 1.0 (başka güncelleme gelmez 🙂)<br/>
+  Bağış Yapmak İsterseniz Sadece Nakit 🙂
+</div>
+
+
   </div>
 </div>
 
   </div>     <!-- topCard kapanıyor -->
 
-      <footer class="footer">
+     <footer class="footer">
   <div class="footerContent">
     <div>© 2026 Ayakkabı Dünyası</div>
-
-
     <div>
       Designed by
       <span class="itLetter">I</span>nformation
       <span class="itLetter">T</span>echnology Specialist Muhammet
     </div>
-
-    <div>Versiyon : 1.0 (başka güncelleme gelmez 🙂)</div>
-    <div>Bağış Yapmak İsterseniz Sadece Nakit 🙂</div>
   </div>
+
+
 </footer>
 
 </div> <!-- wrap kapanıyor -->
@@ -352,14 +368,7 @@
     const ORIGIN = { lat: 41.0894901, lng: 29.0963132 };
     const DEST   = { lat: 41.0691304, lng: 29.0152139 };
 
-    // Saatleri buradan değiştirebilirsin:
-    const SERVICE_MORNING = "07:10";
-const SERVICE_EVENING = "17:00";
-
-
-    document.getElementById("morningTime").textContent = SERVICE_MORNING;
-    document.getElementById("eveningTime").textContent = SERVICE_EVENING;
-
+   
     
 
    const navBtn = document.getElementById("navBtn");
@@ -382,28 +391,7 @@ navBtn.addEventListener("click", function(e){
 document.getElementById("destText").textContent = "Zincirlikuyu Metrobüs";
 
 
-    // OSRM ile km + dakika hesapla (ücretsiz)
-    async function updateETA(){
-      try{
-        const url =
-          `https://router.project-osrm.org/route/v1/driving/` +
-          `${ORIGIN.lng},${ORIGIN.lat};${DEST.lng},${DEST.lat}` +
-          `?overview=false`;
-
-        const res = await fetch(url);
-        if(!res.ok) throw new Error("OSRM yanıt vermedi");
-        const data = await res.json();
-        const route = data.routes?.[0];
-        if(!route) throw new Error("Rota bulunamadı");
-
-        const km = route.distance / 1000;
-        const min = Math.round(route.duration / 60);
-        document.getElementById("etaText").textContent = `${km.toFixed(1)} km • ~${min} dk`;
-      }catch(e){
-        document.getElementById("etaText").textContent = "Hesaplanamadı (internet/servis)";
-      }
-    }
-    updateETA();
+   
 
    
 
