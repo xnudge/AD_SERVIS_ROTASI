@@ -275,8 +275,8 @@
   <img class="logo" src="Screenshot_1.png" alt="Logo Sağ" />
 </div>
 
-      <h1>AYAKKABI DÜNYASI ESAS HOLDİNG-ZİNCİRLİKUYU SERVİS ROTASI</h1>
-      <p class="sub">Tek rota • Mobil uyumlu • Tek tıkla navigasyon</p>
+      <h1>AYAKKABI DÜNYASI SERVİS GÜZERGAHI</h1>
+      <p class="sub">Tek Rota • Mobil Uyumlu • Tek Tıkla Navigasyon</p>
       <div class="tag">Ayakkabı Dünyası • İç Kullanım</div>
 
       <div class="btnRow">
@@ -284,8 +284,10 @@
 
           🚗 Navigasyonu Başlat (Google Maps)
         </a>
-        <button id="shareBtn" class="btn btnGhost" type="button">📲 WhatsApp/Paylaş</button>
-        <button id="refreshBtn" class="btn btnGhost" type="button">🔄 Süreyi Yenile</button>
+       <a href="tel:905353892007" class="btn btnGhost">
+  📞 Ferdi Beyi Ara
+</a>
+
       </div>
 
       <div class="grid">
@@ -402,25 +404,8 @@ document.getElementById("destText").textContent = "Zincirlikuyu Metrobüs";
       }
     }
     updateETA();
-    document.getElementById("refreshBtn").addEventListener("click", updateETA);
 
-    // WhatsApp / Paylaş
-    document.getElementById("shareBtn").addEventListener("click", async () => {
-      const shareText = "AYAKKABI DÜNYASI ESAS HOLDİNG-ZİNCİRLİKUYU SERVİS ROTASI";
-      const shareUrl = location.href;
-
-      // Telefonlarda native share varsa:
-      if (navigator.share) {
-        try {
-          await navigator.share({ title: shareText, text: shareText, url: shareUrl });
-          return;
-        } catch (e) {}
-      }
-
-      // Yoksa WhatsApp linki aç:
-      const wa = `https://wa.me/?text=${encodeURIComponent(shareText + " " + shareUrl)}`;
-      window.open(wa, "_blank", "noopener");
-    });
+   
 
     // Service Worker register (PWA)
     if ("serviceWorker" in navigator) {
