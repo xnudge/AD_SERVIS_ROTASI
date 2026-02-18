@@ -55,15 +55,16 @@
       flex-wrap:wrap;
     }
 
-    .logo{
-      width: 120px;
-      height: 120px;
-      border-radius: 20px;
-      object-fit: cover;
-      background: rgba(255,255,255,.18);
-      border: 1px solid rgba(255,255,255,.28);
-      box-shadow: 0 10px 30px rgba(0,0,0,.25);
-    }
+   .logo{
+  width: 150px;
+  height: 150px;
+  border-radius: 18px;
+  object-fit: contain;
+  background: rgba(255,255,255,.18);
+  border: 1px solid rgba(255,255,255,.28);
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  padding: 10px;
+}
 
     h1{
       margin: 10px 0 6px;
@@ -159,22 +160,25 @@
 
     /* Görseller */
     .gallery{
-      display:flex;
-      justify-content:center;
-      gap: 14px;
-      flex-wrap: wrap;
-      margin-top: 14px;
-    }
-    .gallery img{
-      width: 90%;
-      max-width: 520px;
-      height: auto;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.22);
-      box-shadow: 0 14px 34px rgba(0,0,0,.22);
-      object-fit: cover;
-      background: rgba(255,255,255,.10);
-    }
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+.gallery img{
+  width: 100%;
+  height: 320px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.22);
+  box-shadow: 0 14px 34px rgba(0,0,0,.22);
+  object-fit: cover;
+  background: rgba(255,255,255,.10);
+}
+
+@media (max-width: 900px){
+  .gallery{ grid-template-columns: 1fr; }
+  .gallery img{ height: auto; }
+}
 
     .note{
       margin-top: 10px;
