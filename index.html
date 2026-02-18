@@ -14,6 +14,12 @@
 
   <style>
     :root{
+      --bg1: #0b1b3a;
+      --bg2: #2b2f77;
+
+      --text: #ffffff;
+      --subtext: rgba(255,255,255,.92);
+
       --glass: rgba(255,255,255,.14);
       --glass2: rgba(255,255,255,.10);
       --border: rgba(255,255,255,.22);
@@ -21,15 +27,14 @@
     }
 
     *{ box-sizing: border-box; }
+
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: #fff;
+      color: var(--text);
       background:
-  radial-gradient(900px 500px at 10% 10%, rgba(255,255,255,.18), transparent 60%),
-  linear-gradient(135deg, #0b1b3a, #2b2f77, #0b1b3a);
-
-
+        radial-gradient(900px 500px at 10% 10%, rgba(255,255,255,.18), transparent 60%),
+        linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg1));
       min-height: 100vh;
     }
 
@@ -47,6 +52,7 @@
       backdrop-filter: blur(12px);
       padding: 18px 16px 16px;
       overflow: hidden;
+      animation: fadeIn .55s ease both;
     }
 
     .brandRow{
@@ -57,16 +63,16 @@
       flex-wrap:wrap;
     }
 
-   .logo{
-  width: 150px;
-  height: 150px;
-  border-radius: 18px;
-  object-fit: contain;
-  background: rgba(255,255,255,.18);
-  border: 1px solid rgba(255,255,255,.28);
-  box-shadow: 0 10px 30px rgba(0,0,0,.25);
-  padding: 10px;
-}
+    .logo{
+      width: 150px;
+      height: 150px;
+      border-radius: 18px;
+      object-fit: contain;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.28);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      padding: 10px;
+    }
 
     h1{
       margin: 10px 0 6px;
@@ -75,14 +81,14 @@
       line-height: 1.15;
       text-shadow: 0 10px 30px rgba(0,0,0,.25);
       letter-spacing: .2px;
-
     }
 
     .sub{
       margin: 0;
       text-align:center;
-      opacity: .92;
       font-weight: 600;
+      color: var(--subtext);
+      opacity: 1;
     }
 
     .grid{
@@ -121,16 +127,31 @@
       gap:10px;
       transition: transform .12s ease, opacity .12s ease;
       user-select:none;
+      background: transparent;
     }
     .btn:hover{ transform: translateY(-2px); opacity: .96; }
 
     .btnPrimary{
-  background: rgba(255,255,255,.12);
-  border: 1px solid rgba(255,255,255,.24);
-  color: #fff;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 14px 35px rgba(0,0,0,.22);
-}
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.24);
+      color: #fff;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 14px 35px rgba(0,0,0,.22);
+      position: relative;
+    }
+
+    .btnPrimary::after{
+      content:"";
+      position:absolute;
+      inset:-10px;
+      border-radius: 18px;
+      background: radial-gradient(circle at 30% 20%, rgba(255,255,255,.22), transparent 55%);
+      opacity:0;
+      transition: opacity .15s ease;
+      pointer-events:none;
+    }
+    .btnPrimary:hover::after{ opacity:.9; }
+
     .btnGhost{
       background: rgba(255,255,255,.16);
       border:1px solid rgba(255,255,255,.22);
@@ -165,8 +186,6 @@
       white-space: nowrap;
     }
 
-    
-
     .note{
       margin-top: 10px;
       font-size: 13px;
@@ -179,238 +198,216 @@
       opacity: .85;
     }
 
- @media (max-width: 900px){
-  .grid{ grid-template-columns: 1fr; }
-  .kpis{ grid-template-columns: 1fr; }
-  .logo{ width: 98px; height: 98px; }
+    @media (max-width: 900px){
+      .grid{ grid-template-columns: 1fr; }
+      .kpis{ grid-template-columns: 1fr; }
+      .logo{ width: 98px; height: 98px; }
 
-  .kpi .value{
-    white-space: normal;
-    line-height: 1.2;
-  }
+      .kpi .value{
+        white-space: normal;
+        line-height: 1.2;
+      }
 
-  .btnRow{
-    flex-wrap: nowrap;
-  }
+      .btnRow{
+        flex-wrap: nowrap;
+      }
 
-  .btn{
-    flex: 1;
-    font-size: 14px;
-    padding: 12px 10px;
-  }
-}
+      .btn{
+        flex: 1;
+        font-size: 14px;
+        padding: 12px 10px;
+      }
+    }
 
+    .tag{
+      display:block;
+      width: fit-content;
+      margin: 18px auto 16px auto;
+      padding: 12px 26px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #00e0ff, #6a00ff);
+      color: #fff;
+      font-weight: 900;
+      font-size: 16px;
+      letter-spacing: .5px;
+      text-align:center;
+      box-shadow: 0 10px 30px rgba(0,0,0,.3);
+    }
 
+    .footer{
+      margin-top: 40px;
+      padding: 20px 10px;
+      text-align: center;
+      font-size: 13px;
+      opacity: .85;
+      line-height: 1.6;
+    }
 
-    /* İç kullanım etiketi */
-.tag{
-  display:block;
-  width: fit-content;
-  margin: 18px auto 16px auto;
+    .footerContent{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
 
-  padding: 12px 26px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, #00e0ff, #6a00ff);
-  color: #fff;
-  font-weight: 900;
-  font-size: 16px;
-  letter-spacing: .5px;
-  text-align:center;
-  box-shadow: 0 10px 30px rgba(0,0,0,.3);
-}
+    .itLetter{
+      color: #00e0ff;
+      font-weight: 900;
+      text-shadow: 0 0 8px rgba(0,224,255,.8);
+    }
 
+    /* Sadece navigasyon butonu alt alta olsun */
+    #navBtn{
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
 
-/* Saat badge'leri */
-.badges{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top: 10px;
-}
-.badge{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding: 10px 12px;
-  border-radius: 14px;
-  background: rgba(255,255,255,.10);
-  border: 1px solid rgba(255,255,255,.20);
-  font-weight: 900;
-}
+    .btnMain{ line-height: 1.1; }
 
-/* Açılış animasyonu (Seviye 2) */
-.topCard{
-  animation: fadeIn .55s ease both;
-}
-@keyframes fadeIn{
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+    .btnSub{
+      font-size: 12px;
+      font-style: italic;
+      font-weight: 500;
+      opacity: .8;
+      margin-top: 4px;
+    }
 
-/* Butona hafif glow (Seviye 2) */
-.btnPrimary{
-  position: relative;
-}
-.btnPrimary::after{
-  content:"";
-  position:absolute;
-  inset:-10px;
-  border-radius: 18px;
-  background: radial-gradient(circle at 30% 20%, rgba(255,255,255,.22), transparent 55%);
-  opacity:.0;
-  transition: opacity .15s ease;
-  pointer-events:none;
-}
-.btnPrimary:hover::after{
-  opacity:.9;
-}
-.footer{
-  margin-top: 40px;
-  padding: 20px 10px;
-  text-align: center;
-  font-size: 13px;
-  opacity: .85;
-  line-height: 1.6;
-}
+    @keyframes fadeIn{
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-.footerContent{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
+    /* ===== Light (Gündüz) Modu ===== */
+    body.light{
+      --bg1: #f5f7ff;
+      --bg2: #dbe4ff;
 
-.itLetter{
-  color: #00e0ff;
-  font-weight: 900;
-  text-shadow: 0 0 8px rgba(0,224,255,.8);
-}
+      --text: #0b1b3a;
+      --subtext: rgba(11,27,58,.78);
 
-   /* Sadece navigasyon butonu alt alta olsun */
-#navBtn{
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
+      --glass: rgba(255,255,255,.72);
+      --glass2: rgba(255,255,255,.55);
+      --border: rgba(11,27,58,.18);
+      --shadow: 0 18px 50px rgba(0,0,0,.12);
+    }
 
-.btnMain{
-  line-height: 1.1;
-}
-
-.btnSub{
-  font-size: 12px;
-  font-style: italic;
-  font-weight: 500;
-  opacity: .8;
-  margin-top: 4px;
-}
-
-
-    
+    /* Light modda buton yazıları net olsun */
+    body.light .btnPrimary,
+    body.light .btnGhost{
+      color: var(--text);
+    }
   </style>
 </head>
 
 <body>
   <div class="wrap">
     <div class="topCard">
-     <div class="brandRow">
-  <img class="logo" src="images.png" alt="Logo Sol" />
-  <img class="logo" src="Screenshot_1.png" alt="Logo Sağ" />
-</div>
+      <div class="brandRow">
+        <img class="logo" src="images.png" alt="Logo Sol" />
+        <img class="logo" src="Screenshot_1.png" alt="Logo Sağ" />
+      </div>
 
       <h1>AYAKKABI DÜNYASI SERVİS GÜZERGAHI</h1>
-      <p class="sub">Tek Rota • Mobil Uyumlu </p>
+      <p class="sub">Tek Rota • Mobil Uyumlu</p>
       <div class="tag">Ayakkabı Dünyası • İç Kullanım</div>
 
       <div class="btnRow">
-    <a id="navBtn" class="btn btnPrimary" href="#">
-  <span class="btnMain">🚗 Navigasyonu Başlat</span>
-  <span class="btnSub">Google Maps</span>
-</a>
+        <a id="navBtn" class="btn btnPrimary" href="#">
+          <span class="btnMain">🚗 Navigasyonu Başlat</span>
+          <span class="btnSub">Google Maps</span>
+        </a>
 
-       <a href="tel:905353892007" class="btn btnGhost">
-  📞 Ferdi Beyi Ara
-</a>
+        <a href="tel:905353892007" class="btn btnGhost">📞 Ferdi Beyi Ara</a>
 
+        <!-- ✅ Tema butonu eklendi -->
+        <button id="themeBtn" class="btn btnGhost" type="button">🌙 Gece Modu</button>
       </div>
 
       <div class="grid">
-  <div class="card">
-    <div class="kpis">
-      <div class="kpi">
-        <div class="label">Başlangıç</div>
-        <div id="originText" class="value">-</div>
+        <div class="card">
+          <div class="kpis">
+            <div class="kpi">
+              <div class="label">Başlangıç</div>
+              <div id="originText" class="value">-</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Bitiş</div>
+              <div id="destText" class="value">-</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="note">
+            <b>Bilgilendirme</b><br/>
+            Versiyon : 1.0 (başka güncelleme gelmez 🙂)<br/>
+            Bağış Yapmak İsterseniz Sadece Nakit 🙂
+          </div>
+        </div>
       </div>
-      <div class="kpi">
-        <div class="label">Bitiş</div>
-        <div id="destText" class="value">-</div>
-      </div>
-     
     </div>
 
-    
+    <footer class="footer">
+      <div class="footerContent">
+        <div>© 2026 Ayakkabı Dünyası</div>
+        <div>
+          Designed by
+          <span class="itLetter">I</span>nformation
+          <span class="itLetter">T</span>echnology Specialist Muhammet
+        </div>
+      </div>
+    </footer>
   </div>
-
-  <div class="card">
-   <div class="note">
-  <b>Bilgilendirme</b><br/>
-  Versiyon : 1.0 (başka güncelleme gelmez 🙂)<br/>
-  Bağış Yapmak İsterseniz Sadece Nakit 🙂
-</div>
-
-
-  </div>
-</div>
-
-  </div>     <!-- topCard kapanıyor -->
-
-     <footer class="footer">
-  <div class="footerContent">
-    <div>© 2026 Ayakkabı Dünyası</div>
-    <div>
-      Designed by
-      <span class="itLetter">I</span>nformation
-      <span class="itLetter">T</span>echnology Specialist Muhammet
-    </div>
-  </div>
-
-
-</footer>
-
-</div> <!-- wrap kapanıyor -->
-
-
 
   <script>
     // === ROTA KOORDİNATLARI (senin linkten) ===
     const ORIGIN = { lat: 41.0894901, lng: 29.0963132 };
     const DEST   = { lat: 41.0691304, lng: 29.0152139 };
 
-   
-    
+    const navBtn = document.getElementById("navBtn");
 
-   const navBtn = document.getElementById("navBtn");
+    navBtn.addEventListener("click", function(e){
+      e.preventDefault();
 
-navBtn.addEventListener("click", function(e){
-  e.preventDefault();
+      const googleUrl =
+        `https://www.google.com/maps/dir/?api=1` +
+        `&origin=${ORIGIN.lat},${ORIGIN.lng}` +
+        `&destination=${DEST.lat},${DEST.lng}` +
+        `&travelmode=driving`;
 
-  const googleUrl =
-    `https://www.google.com/maps/dir/?api=1` +
-    `&origin=${ORIGIN.lat},${ORIGIN.lng}` +
-    `&destination=${DEST.lat},${DEST.lng}` +
-    `&travelmode=driving`;
-
-  window.open(googleUrl, "_blank");
-});
-
-
+      window.open(googleUrl, "_blank");
+    });
 
     document.getElementById("originText").textContent = "Esas Holding";
-document.getElementById("destText").textContent = "Zincirlikuyu Metrobüs";
+    document.getElementById("destText").textContent = "Zincirlikuyu Metrobüs";
 
+    // === Tema (Gece/Gündüz) ===
+    const themeBtn = document.getElementById("themeBtn");
 
-   
+    function applyTheme(mode){
+      const isLight = mode === "light";
+      document.body.classList.toggle("light", isLight);
+      localStorage.setItem("theme", mode);
+      if(themeBtn){
+        themeBtn.textContent = isLight ? "🌞 Gündüz Modu" : "🌙 Gece Modu";
+      }
+    }
 
-   
+    // İlk açılış: kayıt varsa onu kullan, yoksa cihaz temasını baz al
+    const savedTheme = localStorage.getItem("theme");
+    if(savedTheme){
+      applyTheme(savedTheme);
+    }else{
+      const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+      applyTheme(prefersLight ? "light" : "dark");
+    }
+
+    if(themeBtn){
+      themeBtn.addEventListener("click", () => {
+        const isLightNow = document.body.classList.contains("light");
+        applyTheme(isLightNow ? "dark" : "light");
+      });
+    }
 
     // Service Worker register (PWA)
     if ("serviceWorker" in navigator) {
