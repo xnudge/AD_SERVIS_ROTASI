@@ -165,27 +165,7 @@
       white-space: nowrap;
     }
 
-    /* Görseller */
-    .gallery{
-  display:grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 14px;
-}
-.gallery img{
-  width: 100%;
-  height: 320px;
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,.22);
-  box-shadow: 0 14px 34px rgba(0,0,0,.22);
-  object-fit: cover;
-  background: rgba(255,255,255,.10);
-}
-
-@media (max-width: 900px){
-  .gallery{ grid-template-columns: 1fr; }
-  .gallery img{ height: auto; }
-}
+    
 
     .note{
       margin-top: 10px;
@@ -262,7 +242,28 @@
 .btnPrimary:hover::after{
   opacity:.9;
 }
+.footer{
+  margin-top: 40px;
+  padding: 20px 10px;
+  text-align: center;
+  font-size: 13px;
+  opacity: .85;
+  line-height: 1.6;
+}
 
+.footerContent{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.itLetter{
+  color: #4da3ff; /* Kurumsal mavi ton */
+  font-weight: 900;
+}
+
+
+    
   </style>
 </head>
 
@@ -279,7 +280,8 @@
       <div class="tag">Ayakkabı Dünyası • İç Kullanım</div>
 
       <div class="btnRow">
-        <a id="navBtn" class="btn btnPrimary" target="_blank" rel="noopener">
+       <a id="navBtn" class="btn btnPrimary" href="#" rel="noopener">
+
           🚗 Navigasyonu Başlat (Google Maps)
         </a>
         <button id="shareBtn" class="btn btnGhost" type="button">📲 WhatsApp/Paylaş</button>
@@ -287,44 +289,60 @@
       </div>
 
       <div class="grid">
-        <div class="card">
-          <div class="kpis">
-            <div class="kpi">
-              <div class="label">Başlangıç</div>
-              <div id="originText" class="value">-</div>
-            </div>
-            <div class="kpi">
-              <div class="label">Bitiş</div>
-              <div id="destText" class="value">-</div>
-            </div>
-            <div class="kpi">
-              <div class="label">Tahmini</div>
-              <div id="etaText" class="value">Hesaplanıyor…</div>
-            </div>
-          </div>
+  <div class="card">
+    <div class="kpis">
+      <div class="kpi">
+        <div class="label">Başlangıç</div>
+        <div id="originText" class="value">-</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Bitiş</div>
+        <div id="destText" class="value">-</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Tahmini</div>
+        <div id="etaText" class="value">Hesaplanıyor…</div>
+      </div>
+    </div>
 
-         <div class="note">
-  <b>Servis Saatleri</b>
-  <div class="badges">
-    <span class="badge">Sabah: <span id="morningTime">07:10</span></span>
-    <span class="badge">Akşam: <span id="eveningTime">17:00</span></span>
+    <div class="note">
+      <b>Servis Saatleri</b>
+      <div class="badges">
+        <span class="badge">Sabah: <span id="morningTime">07:10</span></span>
+        <span class="badge">Akşam: <span id="eveningTime">17:00</span></span>
+      </div>
+      <div class="small">(Saatleri aşağıdaki kodda değiştirirsin.)</div>
+    </div>
   </div>
-  <div class="small">(Saatleri aşağıdaki kodda değiştirirsin.)</div>
+
+  <div class="card">
+    <div class="note">
+      <b>Not</b><br/>
+      Bu sayfa tek rota servis navigasyonu içindir.
+    </div>
+  </div>
 </div>
 
-
-        <div class="card">
-        
-
-      <!-- Senin görsellerin -->
-     <div class="gallery">
-  <img src="images.png" alt="Servis" />
-  <img src="Screenshot_1.png" alt="Logo" />
-</div>
-
-      </div> <!-- ikinci card kapanıyor -->
-    </div>   <!-- grid kapanıyor -->
   </div>     <!-- topCard kapanıyor -->
+
+      <footer class="footer">
+  <div class="footerContent">
+    <div>© 2026 Ayakkabı Dünyası</div>
+
+
+    <div>
+      Designed by
+      <span class="itLetter">I</span>nformation
+      <span class="itLetter">T</span>echnology Specialist Muhammet
+    </div>
+
+    <div>Versiyon : 1.0 (başka güncelleme gelmez 🙂)</div>
+    <div>Bağış Yapmak İsterseniz Sadece Nakit 🙂</div>
+  </div>
+</footer>
+
+</div> <!-- wrap kapanıyor -->
+
 
 
   <script>
@@ -340,12 +358,7 @@ const SERVICE_EVENING = "17:00";
     document.getElementById("morningTime").textContent = SERVICE_MORNING;
     document.getElementById("eveningTime").textContent = SERVICE_EVENING;
 
-    // Google Maps navigasyon linki
-    const gmapsUrl =
-      `https://www.google.com/maps/dir/?api=1` +
-      `&origin=${ORIGIN.lat},${ORIGIN.lng}` +
-      `&destination=${DEST.lat},${DEST.lng}` +
-      `&travelmode=driving`;
+    
 
    const navBtn = document.getElementById("navBtn");
 
@@ -363,10 +376,9 @@ navBtn.addEventListener("click", function(e){
 
 
 
-    document.getElementById("originText").textContent =
-      `${ORIGIN.lat.toFixed(6)}, ${ORIGIN.lng.toFixed(6)}`;
-    document.getElementById("destText").textContent =
-      `${DEST.lat.toFixed(6)}, ${DEST.lng.toFixed(6)}`;
+    document.getElementById("originText").textContent = "Esas Holding";
+document.getElementById("destText").textContent = "Zincirlikuyu Metrobüs";
+
 
     // OSRM ile km + dakika hesapla (ücretsiz)
     async function updateETA(){
