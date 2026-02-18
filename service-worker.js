@@ -1,29 +1,29 @@
-const CACHE_NAME = "ad-servis-rotasi-v1";
+const CACHE_NAME = "ad-servis-v1";
 const ASSETS = [
   "./",
   "./index.html",
   "./manifest.json",
   "./logo.png",
-  "./servis.png"
+  "./images.png",
+  "./Screenshot_1.png"
 ];
 
-// Kurulumda dosyaları cache'le
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
   );
+  self.skipWaiting();
 });
 
-// Eski cache temizliği
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.map(k => (k !== CACHE_NAME ? caches.delete(k) : null)))
+    caches.keys().then((keys) =>
+      Promise.all(keys.map((k) => (k !== CACHE_NAME ? caches.delete(k) : null)))
     )
   );
+  self.clients.claim();
 });
 
-// Cache-first (offline açılabilsin)
 self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches.match(event.request).then((cached) => cached || fetch(event.request))
