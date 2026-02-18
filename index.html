@@ -179,7 +179,7 @@
       opacity: .85;
     }
 
-   @media (max-width: 900px){
+  @media (max-width: 900px){
   .grid{ grid-template-columns: 1fr; }
   .kpis{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .logo{ width: 98px; height: 98px; }
@@ -188,7 +188,18 @@
     white-space: normal;
     line-height: 1.2;
   }
+
+  .btnRow{
+    flex-wrap: nowrap;
+  }
+
+  .btn{
+    flex: 1;
+    font-size: 14px;
+    padding: 12px 10px;
+  }
 }
+
 
 
     /* İç kullanım etiketi */
