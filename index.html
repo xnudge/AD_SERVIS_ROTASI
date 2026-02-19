@@ -447,8 +447,8 @@
           `&origin=${ORIGIN.lat},${ORIGIN.lng}` +
           `&destination=${DEST.lat},${DEST.lng}` +
           `&travelmode=driving`;
-        window.location.href = googleUrl;
-      }, 1500);
+        window.open(googleUrl, "_blank");
+      }, 300);
     });
 
     document.getElementById("originText").textContent = "Esas Holding";
