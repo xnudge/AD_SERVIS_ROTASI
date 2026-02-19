@@ -260,28 +260,29 @@
     /* === Toast === */
     #toast{
       position: fixed;
-      bottom: 30px;
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%) translateY(20px);
+      transform: translate(-50%, -50%) scale(0.8);
       background: linear-gradient(135deg, #ff6b00, #ff0080, #ff6b00);
       background-size: 200% auto;
       animation: toastShimmer 2s linear infinite;
       color: #fff;
       font-weight: 900;
-      font-size: 16px;
-      padding: 15px 32px;
-      border-radius: 50px;
-      box-shadow: 0 0 30px rgba(255,80,0,.6), 0 10px 30px rgba(0,0,0,.4);
+      font-size: 18px;
+      padding: 20px 36px;
+      border-radius: 24px;
+      box-shadow: 0 0 40px rgba(255,80,0,.6), 0 10px 40px rgba(0,0,0,.5);
       opacity: 0;
       pointer-events: none;
       transition: opacity .3s ease, transform .3s ease;
       white-space: nowrap;
       z-index: 999;
       letter-spacing: .4px;
+      text-align: center;
     }
     #toast.show{
       opacity: 1;
-      transform: translateX(-50%) translateY(0);
+      transform: translate(-50%, -50%) scale(1);
     }
     @keyframes toastShimmer{
       0%  { background-position: 0% center; }
@@ -442,13 +443,29 @@
       showToast();
 
       setTimeout(() => {
-        const googleUrl =
-          `https://www.google.com/maps/dir/?api=1` +
-          `&origin=${ORIGIN.lat},${ORIGIN.lng}` +
-          `&destination=${DEST.lat},${DEST.lng}` +
-          `&travelmode=driving`;
-        window.open(googleUrl, "_blank");
-      }, 300);
+        const lat1 = ORIGIN.lat, lng1 = ORIGIN.lng;
+        const lat2 = DEST.lat,   lng2 = DEST.lng;
+
+        // iOS: Google Maps uygulaması
+        const iosUrl     = `comgooglemaps://?saddr=${lat1},${lng1}&daddr=${lat2},${lng2}&directionsmode=driving`;
+        // Android: Google Maps uygulaması
+        const androidUrl = `google.navigation:q=${lat2},${lng2}`;
+        // Fallback: web
+        const webUrl     = `https://www.google.com/maps/dir/?api=1&origin=${lat1},${lng1}&destination=${lat2},${lng2}&travelmode=driving`;
+
+        const isIOS     = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        const isAndroid = /Android/.test(navigator.userAgent);
+
+        if(isIOS){
+          window.location.href = iosUrl;
+          setTimeout(() => { window.location.href = webUrl; }, 1000);
+        } else if(isAndroid){
+          window.location.href = androidUrl;
+          setTimeout(() => { window.location.href = webUrl; }, 1000);
+        } else {
+          window.open(webUrl, "_blank");
+        }
+      }, 1500);
     });
 
     document.getElementById("originText").textContent = "Esas Holding";
