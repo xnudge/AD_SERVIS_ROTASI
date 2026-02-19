@@ -299,23 +299,25 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 8px;
       margin-top: 12px;
       box-shadow: 0 4px 20px rgba(0,224,255,.1);
+      flex-wrap: wrap;
     }
     .dailyLeft{
       display: flex;
       flex-direction: column;
       gap: 2px;
+      min-width: 80px;
     }
     .dailyDate{
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       color: #00e0ff;
       text-shadow: 0 0 8px rgba(0,224,255,.5);
     }
     .dailyTime{
-      font-size: 28px;
+      font-size: clamp(20px, 5vw, 28px);
       font-weight: 900;
       letter-spacing: 2px;
       background: linear-gradient(135deg, #ffffff, #00e0ff);
@@ -323,14 +325,42 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
+    .dailyWeather{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 6px 12px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 14px;
+      min-width: 70px;
+    }
+    .weatherTemp{
+      font-size: clamp(16px, 4vw, 22px);
+      font-weight: 900;
+      color: #fff;
+    }
+    .weatherDesc{
+      font-size: 10px;
+      font-weight: 700;
+      color: #00e0ff;
+      text-align: center;
+      line-height: 1.3;
+    }
     .dailyMsg{
-      font-size: 13px;
+      font-size: clamp(11px, 2.5vw, 13px);
       font-weight: 700;
       text-align: right;
-      max-width: 55%;
+      max-width: 40%;
       line-height: 1.5;
       color: #fff;
       opacity: .95;
+    }
+
+    @media (max-width: 400px){
+      .dailyMsg{ max-width: 100%; text-align: center; }
+      .dailyCard{ justify-content: center; }
     }
 
     /* ===== Light (Gündüz) Modu ===== */
@@ -382,6 +412,10 @@
         <div class="dailyLeft">
           <div class="dailyDate" id="dailyDate">-</div>
           <div class="dailyTime" id="dailyClock">--:--</div>
+        </div>
+        <div class="dailyWeather" id="dailyWeather">
+          <div class="weatherTemp" id="weatherTemp">…</div>
+          <div class="weatherDesc" id="weatherDesc">yükleniyor</div>
         </div>
         <div class="dailyMsg" id="dailyMsg">-</div>
       </div>
@@ -499,6 +533,65 @@
 
     updateClock();
     setInterval(updateClock, 1000);
+
+    // === Hava Durumu (Sabit Konum: Kavacık) ===
+    const weatherIcons = {
+      113: "☀️", 116: "⛅", 119: "☁️", 122: "☁️",
+      143: "🌫️", 176: "🌦️", 179: "🌨️", 182: "🌧️",
+      185: "🌧️", 200: "⛈️", 227: "🌨️", 230: "❄️",
+      248: "🌫️", 260: "🌫️", 263: "🌦️", 266: "🌧️",
+      281: "🌧️", 284: "🌧️", 293: "🌦️", 296: "🌧️",
+      299: "🌧️", 302: "🌧️", 305: "🌧️", 308: "🌧️",
+      311: "🌧️", 314: "🌧️", 317: "🌨️", 320: "🌨️",
+      323: "🌨️", 326: "🌨️", 329: "❄️", 332: "❄️",
+      335: "❄️", 338: "❄️", 350: "🌧️", 353: "🌦️",
+      356: "🌧️", 359: "🌧️", 362: "🌨️", 365: "🌨️",
+      368: "🌨️", 371: "❄️", 374: "🌨️", 377: "🌨️",
+      386: "⛈️", 389: "⛈️", 392: "⛈️", 395: "❄️"
+    };
+
+    const weatherDescTR = {
+      "Sunny": "güneşli", "Clear": "açık", "Partly cloudy": "parçalı bulutlu",
+      "Cloudy": "bulutlu", "Overcast": "kapalı", "Mist": "sisli",
+      "Fog": "sisli", "Freezing fog": "dondurucu sis",
+      "Patchy rain possible": "yer yer yağmur", "Patchy snow possible": "yer yer kar",
+      "Blowing snow": "kar fırtınası", "Blizzard": "tipi",
+      "Thundery outbreaks possible": "gök gürültülü",
+      "Light rain": "hafif yağmur", "Moderate rain": "orta yağmur",
+      "Heavy rain": "yoğun yağmur", "Light snow": "hafif kar",
+      "Moderate snow": "orta kar", "Heavy snow": "yoğun kar",
+      "Light sleet": "sulu kar", "Moderate sleet": "sulu kar",
+      "Light drizzle": "çiseleme", "Freezing drizzle": "dondurucu çiseleme",
+      "Heavy drizzle": "yoğun çiseleme", "Light freezing rain": "dondurucu yağmur",
+      "Moderate or heavy freezing rain": "dondurucu yağmur",
+      "Light rain shower": "hafif sağanak", "Moderate or heavy rain shower": "sağanak",
+      "Torrential rain shower": "şiddetli sağanak",
+      "Light sleet showers": "sulu kar sağanağı",
+      "Light snow showers": "kar sağanağı", "Moderate or heavy snow showers": "yoğun kar",
+      "Patchy light rain": "yer yer yağmur", "Patchy light snow": "yer yer kar",
+      "Thunderstorm": "fırtına", "Ice pellets": "dolu"
+    };
+
+    function fetchWeather(){
+      fetch("https://wttr.in/Kavacik,Istanbul?format=j1")
+        .then(r => r.json())
+        .then(data => {
+          const cur  = data.current_condition[0];
+          const temp = cur.temp_C;
+          const code = parseInt(cur.weatherCode);
+          const icon = weatherIcons[code] || "🌡️";
+          const engDesc = cur.weatherDesc[0].value;
+          const desc = weatherDescTR[engDesc] || engDesc.toLowerCase();
+          document.getElementById("weatherTemp").textContent = `${icon} ${temp}°`;
+          document.getElementById("weatherDesc").textContent = desc;
+        })
+        .catch(() => {
+          document.getElementById("weatherTemp").textContent = "🌡️";
+          document.getElementById("weatherDesc").textContent = "alınamadı";
+        });
+    }
+
+    fetchWeather();
 
     // === Tema (Gece/Gündüz) ===
     const themeBtn = document.getElementById("themeBtn");
