@@ -257,6 +257,81 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
+    /* === Toast === */
+    #toast{
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: linear-gradient(135deg, #ff6b00, #ff0080, #ff6b00);
+      background-size: 200% auto;
+      animation: toastShimmer 2s linear infinite;
+      color: #fff;
+      font-weight: 900;
+      font-size: 16px;
+      padding: 15px 32px;
+      border-radius: 50px;
+      box-shadow: 0 0 30px rgba(255,80,0,.6), 0 10px 30px rgba(0,0,0,.4);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s ease, transform .3s ease;
+      white-space: nowrap;
+      z-index: 999;
+      letter-spacing: .4px;
+    }
+    #toast.show{
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    @keyframes toastShimmer{
+      0%  { background-position: 0% center; }
+      100%{ background-position: 200% center; }
+    }
+
+    /* === Günlük Kart === */
+    .dailyCard{
+      background: linear-gradient(135deg, rgba(106,0,255,.25), rgba(0,224,255,.15));
+      border: 1px solid rgba(0,224,255,.35);
+      border-radius: 20px;
+      padding: 14px 18px;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 12px;
+      box-shadow: 0 4px 20px rgba(0,224,255,.1);
+    }
+    .dailyLeft{
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .dailyDate{
+      font-size: 12px;
+      font-weight: 700;
+      color: #00e0ff;
+      text-shadow: 0 0 8px rgba(0,224,255,.5);
+    }
+    .dailyTime{
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #ffffff, #00e0ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .dailyMsg{
+      font-size: 13px;
+      font-weight: 700;
+      text-align: right;
+      max-width: 55%;
+      line-height: 1.5;
+      color: #fff;
+      opacity: .95;
+    }
+
     /* ===== Light (Gündüz) Modu ===== */
     body.light{
       --bg1: #f5f7ff;
@@ -302,6 +377,14 @@
         <button id="themeBtn" class="btn btnGhost" type="button">🌙 Gece Modu</button>
       </div>
 
+      <div class="dailyCard">
+        <div class="dailyLeft">
+          <div class="dailyDate" id="dailyDate">-</div>
+          <div class="dailyTime" id="dailyClock">--:--</div>
+        </div>
+        <div class="dailyMsg" id="dailyMsg">-</div>
+      </div>
+
       <div class="infoStack">
         <div class="card">
           <div class="kpis">
@@ -324,6 +407,8 @@
           </div>
         </div>
       </div>
+
+  <div id="toast">🚗 Tek Tıkla Doğru Yol</div>
     </div>
 
     <footer class="footer">
@@ -344,21 +429,59 @@
     const DEST   = { lat: 41.0691304, lng: 29.0152139 };
 
     const navBtn = document.getElementById("navBtn");
+    const toast  = document.getElementById("toast");
+
+    // === Toast ===
+    function showToast(){
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3000);
+    }
 
     navBtn.addEventListener("click", function(e){
       e.preventDefault();
+      showToast();
 
-      const googleUrl =
-        `https://www.google.com/maps/dir/?api=1` +
-        `&origin=${ORIGIN.lat},${ORIGIN.lng}` +
-        `&destination=${DEST.lat},${DEST.lng}` +
-        `&travelmode=driving`;
-
-      window.open(googleUrl, "_blank");
+      setTimeout(() => {
+        const googleUrl =
+          `https://www.google.com/maps/dir/?api=1` +
+          `&origin=${ORIGIN.lat},${ORIGIN.lng}` +
+          `&destination=${DEST.lat},${DEST.lng}` +
+          `&travelmode=driving`;
+        window.open(googleUrl, "_blank");
+      }, 300);
     });
 
     document.getElementById("originText").textContent = "Esas Holding";
     document.getElementById("destText").textContent = "Zincirlikuyu Metrobüs";
+
+    // === Günlük Mesajlar ===
+    const gunMesajlari = {
+      0: "😱 Yarın İş Var...",
+      1: "🥱 Pazartesi Sendromu Tespit Edildi… Çözüm: Bi kahve ☕",
+      2: "🛣️ Salı Sallanır ama Rota Sabit 💪",
+      3: "⏳ Hafta bitimi loading… %50",
+      4: "😤 Bugün Dayan, Yarın Rahat 🛋️",
+      5: "🔋 Bugün Performans Enerji Tasarrufunda 😎",
+      6: "🌟 Gününüz Siz Kadar Güzel Geçsin ✨"
+    };
+
+    const gunIsimleri = ["Pazar","Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi"];
+    const ayIsimleri  = ["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"];
+
+    function updateClock(){
+      const now  = new Date();
+      const gun  = now.getDay();
+      const saat = String(now.getHours()).padStart(2,"0");
+      const dak  = String(now.getMinutes()).padStart(2,"0");
+
+      document.getElementById("dailyClock").textContent = `${saat}:${dak}`;
+      document.getElementById("dailyDate").textContent  =
+        `${gunIsimleri[gun]}, ${now.getDate()} ${ayIsimleri[now.getMonth()]} ${now.getFullYear()}`;
+      document.getElementById("dailyMsg").textContent   = gunMesajlari[gun];
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
 
     // === Tema (Gece/Gündüz) ===
     const themeBtn = document.getElementById("themeBtn");
