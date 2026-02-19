@@ -275,47 +275,6 @@
     body.light .btnGhost{
       color: var(--text);
     }
-    /* === Mobilde yan yana kalsın (butonlar + Başlangıç/Bitiş) === */
-@media (max-width: 600px){
-
-  .grid{
-    grid-template-columns: 1fr;
-  }
-
-  /* Butonlar alt alta tam genişlik */
-  .btnRow{
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .btn{
-    width: 100%;
-    justify-content: center;
-    font-size: 16px;
-    padding: 14px 16px;
-  }
-
-  /* Başlangıç + Bitiş yan yana */
-  .kpis{
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .kpi{
-    min-height: auto;
-  }
-
-  .kpi .value{
-    white-space: normal;
-    line-height: 1.2;
-  }
-
-  .logo{
-    width: 98px;
-    height: 98px;
-  }
-}
-
   </style>
 </head>
 
@@ -332,7 +291,7 @@
       <div class="tag">Ayakkabı Dünyası • İç Kullanım</div>
 
       <div class="btnRow">
-        <a id="navBtn" class="btn btnPrimary" href="#">
+        <a id="navBtn" class="btn btnPrimary" href="javascript:void(0)">
           <span class="btnMain">🚗 Navigasyonu Başlat</span>
           <span class="btnSub">Google Maps</span>
         </a>
@@ -352,6 +311,10 @@
             <div class="kpi">
               <div class="label">Bitiş</div>
               <div id="destText" class="value">-</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Güzergah</div>
+              <div class="value">Tek Rota</div>
             </div>
           </div>
         </div>
