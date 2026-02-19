@@ -534,54 +534,17 @@
     updateClock();
     setInterval(updateClock, 1000);
 
-    // === Hava Durumu (Sabit Konum: Kavacık) ===
-    const weatherIcons = {
-      113: "☀️", 116: "⛅", 119: "☁️", 122: "☁️",
-      143: "🌫️", 176: "🌦️", 179: "🌨️", 182: "🌧️",
-      185: "🌧️", 200: "⛈️", 227: "🌨️", 230: "❄️",
-      248: "🌫️", 260: "🌫️", 263: "🌦️", 266: "🌧️",
-      281: "🌧️", 284: "🌧️", 293: "🌦️", 296: "🌧️",
-      299: "🌧️", 302: "🌧️", 305: "🌧️", 308: "🌧️",
-      311: "🌧️", 314: "🌧️", 317: "🌨️", 320: "🌨️",
-      323: "🌨️", 326: "🌨️", 329: "❄️", 332: "❄️",
-      335: "❄️", 338: "❄️", 350: "🌧️", 353: "🌦️",
-      356: "🌧️", 359: "🌧️", 362: "🌨️", 365: "🌨️",
-      368: "🌨️", 371: "❄️", 374: "🌨️", 377: "🌨️",
-      386: "⛈️", 389: "⛈️", 392: "⛈️", 395: "❄️"
-    };
-
-    const weatherDescTR = {
-      "Sunny": "güneşli", "Clear": "açık", "Partly cloudy": "parçalı bulutlu",
-      "Cloudy": "bulutlu", "Overcast": "kapalı", "Mist": "sisli",
-      "Fog": "sisli", "Freezing fog": "dondurucu sis",
-      "Patchy rain possible": "yer yer yağmur", "Patchy snow possible": "yer yer kar",
-      "Blowing snow": "kar fırtınası", "Blizzard": "tipi",
-      "Thundery outbreaks possible": "gök gürültülü",
-      "Light rain": "hafif yağmur", "Moderate rain": "orta yağmur",
-      "Heavy rain": "yoğun yağmur", "Light snow": "hafif kar",
-      "Moderate snow": "orta kar", "Heavy snow": "yoğun kar",
-      "Light sleet": "sulu kar", "Moderate sleet": "sulu kar",
-      "Light drizzle": "çiseleme", "Freezing drizzle": "dondurucu çiseleme",
-      "Heavy drizzle": "yoğun çiseleme", "Light freezing rain": "dondurucu yağmur",
-      "Moderate or heavy freezing rain": "dondurucu yağmur",
-      "Light rain shower": "hafif sağanak", "Moderate or heavy rain shower": "sağanak",
-      "Torrential rain shower": "şiddetli sağanak",
-      "Light sleet showers": "sulu kar sağanağı",
-      "Light snow showers": "kar sağanağı", "Moderate or heavy snow showers": "yoğun kar",
-      "Patchy light rain": "yer yer yağmur", "Patchy light snow": "yer yer kar",
-      "Thunderstorm": "fırtına", "Ice pellets": "dolu"
-    };
-
+    // === Hava Durumu (Open-Meteo, API key gerekmez, CORS yok) ===
+    // Koordinatlar: Kavacık, İstanbul
     function fetchWeather(){
-      fetch("https://wttr.in/Kavacik,Istanbul?format=j1")
+      const url = "https://api.open-meteo.com/v1/forecast?latitude=41.089&longitude=29.096&current=temperature_2m,weathercode&timezone=Europe/Istanbul";
+
+      fetch(url)
         .then(r => r.json())
         .then(data => {
-          const cur  = data.current_condition[0];
-          const temp = cur.temp_C;
-          const code = parseInt(cur.weatherCode);
-          const icon = weatherIcons[code] || "🌡️";
-          const engDesc = cur.weatherDesc[0].value;
-          const desc = weatherDescTR[engDesc] || engDesc.toLowerCase();
+          const temp = Math.round(data.current.temperature_2m);
+          const code = data.current.weathercode;
+          const { icon, desc } = getWeather(code);
           document.getElementById("weatherTemp").textContent = `${icon} ${temp}°`;
           document.getElementById("weatherDesc").textContent = desc;
         })
@@ -589,6 +552,27 @@
           document.getElementById("weatherTemp").textContent = "🌡️";
           document.getElementById("weatherDesc").textContent = "alınamadı";
         });
+    }
+
+    function getWeather(code){
+      if(code === 0)                        return { icon:"☀️",  desc:"açık" };
+      if(code === 1)                        return { icon:"🌤️", desc:"az bulutlu" };
+      if(code === 2)                        return { icon:"⛅",  desc:"parçalı bulutlu" };
+      if(code === 3)                        return { icon:"☁️",  desc:"bulutlu" };
+      if([45,48].includes(code))            return { icon:"🌫️", desc:"sisli" };
+      if([51,53,55].includes(code))         return { icon:"🌦️", desc:"çiseleme" };
+      if([56,57].includes(code))            return { icon:"🌧️", desc:"dondurucu çiseleme" };
+      if([61,63].includes(code))            return { icon:"🌧️", desc:"yağmurlu" };
+      if(code === 65)                       return { icon:"🌧️", desc:"yoğun yağmur" };
+      if([66,67].includes(code))            return { icon:"🌧️", desc:"dondurucu yağmur" };
+      if([71,73].includes(code))            return { icon:"🌨️", desc:"karlı" };
+      if(code === 75)                       return { icon:"❄️",  desc:"yoğun kar" };
+      if(code === 77)                       return { icon:"🌨️", desc:"kar tanesi" };
+      if([80,81].includes(code))            return { icon:"🌦️", desc:"sağanak" };
+      if(code === 82)                       return { icon:"🌧️", desc:"şiddetli sağanak" };
+      if([85,86].includes(code))            return { icon:"🌨️", desc:"kar sağanağı" };
+      if([95,96,99].includes(code))         return { icon:"⛈️", desc:"fırtına" };
+      return { icon:"🌡️", desc:"bilinmiyor" };
     }
 
     fetchWeather();
